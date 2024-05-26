@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import * as BooksAPI from "./BooksAPI";
+import * as BooksAPI from "../BooksAPI";
 import Book from "./Book";
 import {Link} from "react-router-dom"
 
@@ -8,18 +8,25 @@ const SearchBooks = (props) => {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
-    if (query.length === 0) {
-      setBooks([]);
-    } else {
-      const getSearchBooks = async () => {
-        const response = await BooksAPI.search(query);
-        if (response?.error){
-            return setBooks([]);
-        }
-        return setBooks(response);
-      };
-      getSearchBooks();
+    let unmounted = false;
+    if (!unmounted){
+      if (query.length === 0) {
+        setBooks([]);
+      } else {
+        const getSearchBooks = async () => {
+          const response = await BooksAPI.search(query);
+          if (response?.error){
+              return setBooks([]);
+          }
+          return setBooks(response);
+        };
+        getSearchBooks();
+      }
+    };
+    return () => {
+      unmounted = true;
     }
+    
   }, [query]);
 
   return (
