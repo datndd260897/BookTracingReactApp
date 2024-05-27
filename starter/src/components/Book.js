@@ -55,7 +55,7 @@ const Book = (props) => {
       </div>
       <div className="book-title">{props.title}</div>
       <div className="book-authors">
-        {props.authors.map((author) => `${author},`)}
+        {props.authors?.map((author) => `${author},`)}
       </div>
     </div>
   );
